@@ -1,0 +1,11 @@
+__pycache__/
+.env
+generated/
+*.log
+scheduled_posts.txt
+*.pyc
+*.pkl
+.DS_Store
+*.db
+node_modules/
+venv/

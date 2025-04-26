@@ -1,0 +1,364 @@
+:root {
+  /* Colors */
+  --primary: #5a67d8;
+  --primary-light: #7886e0;
+  --primary-dark: #4c51bf;
+  --secondary: #f56565;
+  --dark-text: #2d3748;
+  --light-text: #718096;
+  --background: #f7fafc;
+  --card-bg: #fff;
+  --border-color: #e2e8f0;
+  --error: #e53e3e;
+  --success: #38a169;
+
+  /* Spacing */
+  --spacing-xxs: 1px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition: all 0.2s ease-in-out;
+}
+
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+body {
+  background-color: hsl(var(--background));
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  line-height: inherit;
+
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.col-span-6 {
+  grid-column: span 6;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .col-span-6 {
+    grid-column: span 1;
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+nav {
+  display: block;
+
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-md {
+  gap: var(--spacing-md);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Header & Footer */
+
+.header {
+  background-color: rgb(122, 122, 104);
+  background-blend-mode: overlay;
+  padding: var(--spacing-md) ;
+  box-shadow: var(--shadow-sm);
+  background: linear-gradient(to right, #000000fd, #03130b);
+  border-top: 3px ridge rgb(143, 104, 33);
+  margin-bottom: var(--spacing-xl);
+}
+
+.footer {
+  background-color: rgb(29, 29, 27);
+  padding: var(--spacing-lg) 0;
+  margin-top: var(--spacing-xxl);
+  border-top: 1px solid var(--border-color);
+  color: var(--light-text);
+}
+
+/* Cards & Containers */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.main {
+  min-height: calc(100vh - 200px);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tab {
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(90, 103, 216, 0.2);
+}
+
+/* Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  font-size: 14px;
+}
+
+.button-primary {
+  background-color: var(--primary);
+  color: white;
+  margin-right: 20px;
+}
+
+.button-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.button-secondary {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.button-secondary:hover {
+  background-color: #e53e3e;
+}
+
+.button-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.button-outline:hover {
+  background-color: rgba(90, 103, 216, 0.1);
+}
+
+.button-lg {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: 18px;
+}
+
+.button-sm {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Utilities */
+.mr-sm {
+  margin-right: var(--spacing-sm);
+}
+
+/* Platform & Tone Selectors */
+.platform-selector,
+.tone-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.platform-option,
+.tone-option {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.platform-option:hover,
+.tone-option:hover {
+  border-color: var(--primary-light);
+}
+
+.platform-option.active,
+.tone-option.active {
+  border-color: var(--primary);
+  background-color: rgba(90, 103, 216, 0.1);
+  color: var(--primary);
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: var(--spacing-md) 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+/* Social Preview Frame Styles */
+.social-preview {
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.social-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.social-preview-actions {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.social-preview-actions i {
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--light-text);
+}
+
+.social-preview-actions i:hover {
+  color: var(--primary);
+}
