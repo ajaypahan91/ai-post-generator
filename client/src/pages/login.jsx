@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/Aipost");
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

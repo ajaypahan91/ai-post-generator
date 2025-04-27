@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { usePost } from '../context/PostContext';
 import GeneratingOverlay from './GeneratingOverlay';
-import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
 const ContentSettings = () => {
   const { post, updatePost, activeTab, setIsGenerating, setProgress, setGeneratingMessage } = usePost();
@@ -10,44 +12,45 @@ const ContentSettings = () => {
   const platformOptions = [
     { id: 'instagram', label: 'Instagram', icon: 'fab fa-instagram' },
     { id: 'twitter-post', label: 'Twitter', icon: 'fab fa-twitter' },
-    { id: 'facebook-post', label: 'Facebook', icon: 'fab fa-facebook' }
+    { id: 'facebook-post', label: 'Facebook', icon: 'fab fa-facebook' },
   ];
 
   const toneOptions = [
     'professional', 'casual', 'funny', 'serious', 'promotional', 'informative'
   ];
 
-  // Function to handle caption generation
   const handleGenerateCaption = async () => {
-    //Input validation
     if (!post.brandName || !post.platform || !post.tone || !post.keywords) {
       alert("Please fill out all required fields before generating a post.");
       return;
     }
 
     try {
-      setIsGenerating(true); // Set generating state
-      setProgress(10); // Set progress state
+      setIsGenerating(true);
+      setProgress(10);
       setGeneratingMessage("Generating caption...");
 
-      const response = await axios.post('http://localhost:5000/generate-caption', post);
-      const captionText = response.data.caption;
+      const response = await axios.post(`${BACKEND_URL}/generate-caption`, {
+        brand: post.brandName,
+        tone: post.tone,
+        keywords: post.keywords,
+        platform: post.platform,
+      });
 
-      // Update the generated caption in the state and post context
-      setGeneratedCaption(captionText);
-      updatePost({ caption: captionText }); // Sync to shared context
+      const generated = response.data.caption; // <-- Correctly receive from backend
+      setGeneratedCaption(generated);
+      updatePost({ caption: generated });
+
       setProgress(50);
       setGeneratingMessage("Generating image...");
 
-      // Now, generate the image based on the caption and platform
-      const imageResponse = await axios.post('http://localhost:5000/generate-image', {
-        prompt: captionText, // Use the caption as the prompt
-        platform_format: `${post.platformOption}`,
+      const imageResponse = await axios.post(`${BACKEND_URL}/generate-image`, {
+        prompt: generated,
+        platform_format: post.platformOption || post.platform,
         style: post.imageStyle,
       });
 
       const imageUrl = imageResponse.data.imageUrl;
-      // Update the post context with the generated image URL
       updatePost({ generatedImageUrl: imageUrl });
 
       setProgress(100);
@@ -64,9 +67,9 @@ const ContentSettings = () => {
   };
 
   return (
-
     <div className={`tab-content ${activeTab === 'content' ? 'active' : ''}`} id="content-tab">
       <GeneratingOverlay />
+      
       <div className="form-group">
         <label htmlFor="brand-name">User Name</label>
         <input
@@ -87,14 +90,12 @@ const ContentSettings = () => {
               className={`platform-option ${post.platform === platform.id ? 'active' : ''}`}
               onClick={() => updatePost({ platform: platform.id })}
             >
-              <i className={platform.icon}></i>
-              {platform.label}
+              <i className={platform.icon}></i> {platform.label}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Conditionally render platform-specific options */}
       {post.platform === 'instagram' && (
         <div className="form-group">
           <label>Type</label>
@@ -162,13 +163,12 @@ const ContentSettings = () => {
         Generate Post
       </button>
 
-      {/* Display the generated caption */}
       {generatedCaption && (
         <div className="generated-caption">
           <h3 style={{ marginTop: '2.5rem' }}>Generated Captions:</h3>
           {generatedCaption
-            .split('\n\n') // assuming each caption is separated by a double newline
-            .filter(c => c.trim() !== '') // remove any blank entries
+            .split('\n\n')
+            .filter(c => c.trim() !== '')
             .map((caption, index) => (
               <p key={index} style={{ marginBottom: '1rem' }}>
                 {caption}

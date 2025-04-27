@@ -15,9 +15,10 @@ export const PostProvider = ({ children }) => {
     keywords: '',
     caption: '',
     imageUrl: '',
-    generatedImageUrl: '', // Reset generated image URL
+    generatedImageUrl: '', 
     filter: '',
     imageStyle: '',
+    platformOption: '',
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -37,9 +38,10 @@ export const PostProvider = ({ children }) => {
       keywords: '',
       caption: '',
       imageUrl: '',
-      generatedImageUrl: '', // Reset generated image URL
+      generatedImageUrl: '', 
       filter: '',
       imageStyle: '',
+      platformOption: '',
     });
   };
 
