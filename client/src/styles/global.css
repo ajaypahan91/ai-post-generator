@@ -188,7 +188,7 @@ label {
 
 
 .header {
-  background-color: rgba(214, 150, 150, 0.219);
+  background-color: rgb(34, 17, 17);
   box-shadow: var(--shadow-sm);
   padding: var(--spacing-md) ;
   position: sticky;

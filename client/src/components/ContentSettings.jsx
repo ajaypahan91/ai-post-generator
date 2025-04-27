@@ -72,7 +72,7 @@ const ContentSettings = () => {
         <input
           type="text"
           id="brand-name"
-          placeholder="Enter your user name"
+          placeholder="Your name"
           value={post.brandName}
           onChange={(e) => updatePost({ brandName: e.target.value })}
         />

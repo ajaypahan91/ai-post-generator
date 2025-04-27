@@ -37,7 +37,7 @@ export default function Signup() {
     <div className="auth-page">
     <div className="auth-container">
         <div className="home">
-        <i className="fa-solid fa-chevron-left"></i>
+        <i class="fa-solid fa-chevron-left"></i>
         <a href="/" className=""> 
             Back to home
           </a>

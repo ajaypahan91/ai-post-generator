@@ -20,7 +20,7 @@ export default function Home() {
         <div className="header-content">
           <div className="logo-section">
             {/* <Sparkles className="icon" /> */}
-            <h1 className="logo-title">PostCraft AI</h1>
+            <h1 className="logo-title">CapKraft</h1>
           </div>
 
           <div className="auth-buttons">
@@ -101,7 +101,7 @@ export default function Home() {
             <span>Instagram</span>
           </div>
           <div className="platform-card">
-            <Facebook className="platform-icon" color=" #1877F2"/>
+            <Facebook className="platform-icon" color="rgb(1, 12, 26)"/>
             <span>Facebook</span>
           </div>
           <div className="platform-card">
@@ -114,8 +114,9 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="cta-section">
+        <div className="cta-content">
         <h2 className="cta-title">Ready to Transform Your Social Media?</h2>
-        <p className="cta-subtitle">Join thousands of creators who save time and boost engagement with our AI-powered caption generator.</p>
+        <p className="cta-subtitle">Join Capkraft AI, save time and boost engagement with our AI powered caption generator.</p>
 
         {user ? (
           <Link to="/Aipost" className="btn-white">
@@ -126,6 +127,7 @@ export default function Home() {
             Create Free Account
           </Link>
         )}
+        </div>
       </section>
 
       {/* Footer */}
@@ -133,10 +135,10 @@ export default function Home() {
         <div className="footer-content">
           <div className="footer-logo">
             <Sparkles className="footer-icon" />
-            <span className="footer-title">PostCraft AI</span>
+            <span className="footer-title">CapKraft</span>
           </div>
           <div className="footer-text">
-            &copy; {new Date().getFullYear()} PostCraft AI. 
+            &copy; {new Date().getFullYear()} CapKraft. 
           </div>
         </div>
       </footer>

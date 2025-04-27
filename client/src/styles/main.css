@@ -148,13 +148,13 @@ nav {
 /* Header & Footer */
 
 .header {
-  background-color: rgb(29, 29, 15);
+  background-color: rgb(8, 7, 7);
   background-blend-mode: overlay;
   padding: var(--spacing-md) ;
   box-shadow: var(--shadow-sm);
   /* background: linear-gradient(to right, #000000fd, #03130b); */
   border-top: 3px ridge rgb(143, 104, 33);
-  margin-bottom: var(--spacing-xl);
+  /* margin-bottom: var(--spacing-xl); */
 }
 
 .footer {

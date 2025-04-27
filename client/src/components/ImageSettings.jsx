@@ -10,27 +10,21 @@ const ImageSettings = () => {
   const [imagePrompt, setImagePrompt] = useState('');
   const [generatedCaption, setGeneratedCaption] = useState('');
 
-  // Function to handle caption generation
+  // Function to generate caption
   const handleGenerateCaption = async () => {
-   
     try {
-      
       const response = await axios.post('http://localhost:5000/generate-caption', post);
       const captionText = response.data.caption;
 
-      // Update the generated caption in the state and post context
       setGeneratedCaption(captionText);
-      updatePost({ caption: captionText }); // Sync to shared context
-      
-     
+      updatePost({ caption: captionText });
 
     } catch (error) {
-      console.error('Error generating caption:', error);
+      console.error('❌ Error generating caption:', error);
       setGeneratedCaption('Failed to generate caption. Please try again.');
       updatePost({ caption: 'Failed to generate caption. Please try again.' });
     }
   };
-  
 
   // Function to handle similar image generation (using image_transformer.py backend)
   const handleGenerateSimilarImage = async (imagePrompt) => {
@@ -82,10 +76,10 @@ const ImageSettings = () => {
             <button
               className="button button-primary"
               onClick={() => {
-                // Generate Image
-                generateImage(imagePrompt);
-                // Generate Caption
-                handleGenerateCaption(imagePrompt);
+               
+                handleGenerateCaption(imagePrompt); // Generate Caption
+                generateImage(imagePrompt); // Generate Image
+                  
               }}
             >
               <i className="fas fa-image mr-sm"></i>

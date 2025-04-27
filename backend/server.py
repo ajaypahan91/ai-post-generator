@@ -32,15 +32,21 @@ def get_caption():
         tone = data.get('tone')
         keywords = data.get('keywords')
         platform = data.get('platform')
+        prompt = data.get('prompt', None)  # New prompt field added
         existing_caption = data.get('existingCaption', None)  # Optional
 
-        # Generate the caption
-        caption = generate_caption(brand, tone, keywords, platform, existing_caption)
+        # If all inputs are blank, use prompt as primary input
+        if not any([brand, tone, keywords, platform]) and prompt:
+            caption = generate_caption(brand=None, tone=None, keywords=None, platform=None, prompt=prompt, existing_caption=existing_caption)
+        else:
+            # Generate the caption with available details
+            caption = generate_caption(brand, tone, keywords, platform, existing_caption)
 
         return jsonify({'caption': caption}), 200
     except Exception as e:
         print(f"❌ Error generating caption: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 # ------------------------ Image Generation ------------------------
 @app.route('/generate-image', methods=['POST'])

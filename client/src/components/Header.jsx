@@ -21,14 +21,14 @@ const Header = () => {
           <div className="logo-section">
           <a href="/" className=""> 
             {/* <Sparkles className="icon" /> */}
-            <h1 className="logo-title">PostCraft AI</h1>
+            <h1 className="logo-title">CapKraft </h1>
             </a>
           </div>
 
           <div className="auth-buttons">
             {user ? (
               <div className="user-info">
-                {/* <span className="user-name">Hi, {user.displayName || user.email}</span> */}
+                <span className="user-name">Hi, {user.displayName || user.email}</span>
                 <button onClick={handleLogout} className="btn-outline">
                   
                   Log out

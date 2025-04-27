@@ -8,7 +8,7 @@
   /* Header */
   .header {
     background-color: #fff;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: px solid #e5e7eb;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     padding: 1rem 0;
     position: sticky;
@@ -57,7 +57,7 @@
     flex-direction:row;
     color: #b3c7e4;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
   }
   
   .btn-primary, .btn-primary-large, .btn-white, .btn-outline, .btn-ghost {
@@ -88,9 +88,12 @@
   .btn-primary-large {
     background-color: #6366f1;
     color: white;
+    display: inline-block;
+    max-width:fit-content;
     padding: 1rem 2rem;
     font-size: 1.2rem;
   }
+  
   
   .btn-primary-large:hover {
     background-color: #4f46e5;
@@ -117,11 +120,12 @@
   }
   
   .btn-white {
+    display: inline-block;
     background-color: white;
     color: #6366f1;
     align-items:center;
-    width: 100%;
-    padding: 0.75rem 2rem;
+    max-width: fit-content;
+    padding: 1rem 2rem;
   }
   
   .btn-white:hover {
@@ -131,6 +135,7 @@
   /* Hero Section */
   .hero-section {
     text-align: center;
+    background-color: #0a0516;
     padding: 4rem 1.5rem;
   }
   
@@ -142,16 +147,16 @@
   .hero-title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #111827ea;
-    margin-bottom: 1rem;
+    color: #fffffff5;
+    margin-bottom: 4rem;
   }
   
   .hero-subtitle {
     font-size: 1.25rem;
     color: #6b7280;
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
   }
-  
+
   /* Features Section */
   .features-section {
     background-color: #f9fafb;
@@ -249,20 +254,28 @@
   
   /* CTA Section */
   .cta-section {
-    background: #6366f1;
+    background: #080114;
     color: white;
     padding: 5rem 1.5rem;
     text-align: center;
   }
-  
+  .cta-content {
+    max-width: 700px;
+    margin: auto;
+
+  }
   .cta-title {
     font-size: 2rem;
+    max-width: 700px;
     font-weight: bold;
+    color: #665e91;
     margin-bottom: 1rem;
   }
   
   .cta-subtitle {
+    align-content: center;
     font-size: 1.25rem;
+    max-width: 700px;
     margin-bottom: 2rem;
   }
   
