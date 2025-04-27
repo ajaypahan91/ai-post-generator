@@ -135,18 +135,60 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const simulateProgress = (start, end) => {
-    setProgress(start);
-    return setInterval(() => {
-      setProgress(prev => {
-        if (prev >= end) {
-          return end;
-        }
-        return prev + Math.random() * 5;
+ 
+  const generateCaptionFromImage = async () => {
+    // Ensure the image is uploaded before proceeding
+    if (!post.imageUrl) {
+      alert('Please upload an image first');
+      return;
+    }
+  
+    // Set states for showing the progress
+    setIsGenerating(true);
+    setProgress(0);
+    setGeneratingMessage('Generating caption from the uploaded image...');
+  
+    // Simulate the progress (you may already have this function)
+    const timer = simulateProgress(0, 90);
+  
+    try {
+      // Make the API request to the backend for caption generation
+      const response = await apiRequest('POST', `${BACKEND_URL}/image-caption`, {
+        imageUrl: post.imageUrl  // Use the uploaded image URL
       });
-    }, 100);
+  
+      const data = await response.json()
+      updatePost({ caption: data.captions });
+      console.log("Generated Caption Data:", data);
+      
+      // If caption generation is successful, update the post state with the generated caption
+      if (data.caption) {
+        updatePost({ caption: data.caption });
+        setProgress(100); // Set progress to 100 once the caption is generated
+        setGeneratingMessage('Caption generated successfully!');
+      } else {
+        alert('No caption was returned from the server');
+      }
+  
+      // Clear the progress timer and reset generating status
+      clearInterval(timer);
+  
+      setTimeout(() => {
+        setIsGenerating(false);
+      }, 500);
+  
+    } catch (error) {
+      // Handle errors that occur during the request
+      console.error('Error generating caption from image:', error);
+      clearInterval(timer);
+      setGeneratingMessage('Error generating caption. Please try again.');
+  
+      setTimeout(() => {
+        setIsGenerating(false);
+      }, 1500);
+    }
   };
-
+  
   const savePost = async () => {
     if (!post.brandName || !post.caption) {
       alert('Please enter brand name and caption');
@@ -166,7 +208,7 @@ export const PostProvider = ({ children }) => {
         tone: post.tone,
         keywords: post.keywords,
         caption: post.caption,
-        imageUrl: post.generatedImageUrl || post.imageUrl, // Use generated image if available
+        imageUrl: post.generatedImageUrl || post.imageUrl,
         filter: post.filter,
         imageStyle: post.imageStyle,
         createdAt: new Date().toISOString()
@@ -188,6 +230,18 @@ export const PostProvider = ({ children }) => {
         setIsGenerating(false);
       }, 1500);
     }
+  };
+
+ const simulateProgress = (start, end) => {
+    setProgress(start);
+    return setInterval(() => {
+      setProgress(prev => {
+        if (prev >= end) {
+          return end;
+        }
+        return prev + Math.random() * 5;
+      });
+    }, 100);
   };
 
   const rephraseCaption = async () => {
@@ -239,6 +293,7 @@ export const PostProvider = ({ children }) => {
       resetPost,
       generateCaption,
       generateImage,
+      generateCaptionFromImage,
       savePost,
       rephraseCaption,
       setIsGenerating,

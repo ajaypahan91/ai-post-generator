@@ -4,8 +4,8 @@ import time
 from flask import Flask, request, jsonify, send_from_directory
 from caption_generator import generate_caption
 from image_generator import generate_image
-from image_transformer import generate_stylized_image
-
+from image_caption import generate_caption_from_image
+from PIL import Image
 
 from flask_cors import CORS
 from uuid import uuid4
@@ -77,14 +77,14 @@ def get_image():
 
 
 
-# ------------------------ Image Transformation ------------------------
-
-@app.route('/transform-image', methods=['POST'])
-def transform_image_endpoint():
+# ------------------------ Image Caption ------------------------
+@app.route('/image-caption', methods=['POST'])
+def image_caption():
     if 'image' not in request.files:
         return jsonify({'error': 'No image uploaded'}), 400
 
     image_file = request.files['image']
+    brand = request.form.get('brandName', 'Unknown Brand')  # Get brand name from form
     style = request.form.get('style', 'realistic')
     platform_format = request.form.get('platform_format', 'instagram-post')
 
@@ -97,23 +97,22 @@ def transform_image_endpoint():
         upload_path = os.path.join('generated', f"input_{int(time.time())}_{filename}")
         image_file.save(upload_path)
 
-        # 🔥 Call the transformer to style the image
-        from image_transformer import generate_stylized_image
-        output_path = generate_stylized_image(upload_path, style=style, platform_format=platform_format)
+        # 🛠️ Open the saved file as PIL image
+        input_image = Image.open(upload_path).convert("RGB")  # Convert to RGB in case it's in different format
 
-        # Convert to base64 for preview
-        with open(output_path, "rb") as image_file:
-            base64_image = base64.b64encode(image_file.read()).decode('utf-8')
-
+        # 🔥 Call the function to generate captions for the uploaded image
+        captions = generate_caption_from_image(upload_path, brand)
+        
         return jsonify({
             'originalImageUrl': f"{BASE_URL}/generated/{os.path.basename(upload_path)}",
-            'transformedImageUrl': f"data:image/png;base64,{base64_image}",
-            'styleApplied': style
-        }), 200
+            'captions': captions,
+            }), 200
 
     except Exception as e:
         print("❌ Error in transform-image route:", e)
-        return jsonify({'error': 'Image transformation failed'}), 500
+        return jsonify({'error': 'Image captioning failed'}), 500
+
+
 
 # ------------------------ Serve Generated Images ------------------------
 @app.route('/generated/<filename>')

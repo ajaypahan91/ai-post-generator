@@ -1,11 +1,13 @@
 import React from 'react';
 import { usePost } from '../context/PostContext';
+
 const defaultImage = "https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg";
 
 const PostPreview = () => {
   const { post, updatePost, rephraseCaption } = usePost();
-
-
+  console.log(post.caption);  // Add this line for debugging
+  console.log('Updated Post:', post);
+  
   const getPreviewHeader = () => {
     switch (post.platform) {
       case 'instagram':
@@ -33,7 +35,6 @@ const PostPreview = () => {
             <div className="flex items-center">
               <img
                 src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=60&q=80"
-
                 alt="Profile"
                 style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px' }}
               />
@@ -49,13 +50,13 @@ const PostPreview = () => {
             <i className="fab fa-twitter" style={{ color: '#1DA1F2' }}></i>
           </div>
         );
+        
       case 'facebook-post':
         return (
           <div className="social-preview-header">
             <div className="flex items-center">
               <img
                 src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=60&q=80"
-
                 alt="Profile"
                 style={{ width: '32px', height: '32px', borderRadius: '50%', marginRight: '8px' }}
               />
@@ -71,6 +72,7 @@ const PostPreview = () => {
             <i className="fas fa-ellipsis-h"></i>
           </div>
         );
+        
       default:
         return null;
     }
@@ -88,6 +90,7 @@ const PostPreview = () => {
             <i className="far fa-paper-plane"></i>
           </div>
         );
+        
       case 'twitter-post':
         return (
           <div className="social-preview-actions">
@@ -97,6 +100,7 @@ const PostPreview = () => {
             <i className="far fa-share-square"></i>
           </div>
         );
+        
       case 'facebook-post':
         return (
           <div className="social-preview-actions">
@@ -105,6 +109,7 @@ const PostPreview = () => {
             <i className="far fa-share-square"></i>
           </div>
         );
+        
       default:
         return null;
     }
@@ -140,22 +145,20 @@ const PostPreview = () => {
           backgroundColor: 'white',
           marginBottom: 'var(--spacing-lg)',
           maxWidth: '400px',
-
         }}
       >
         {getPreviewHeader()}
 
         <div className="social-preview-content">
-
           <img
             key={post.generatedImageUrl || post.imageUrl}
             src={
               post.generatedImageUrl && !post.generatedImageUrl.startsWith('data:image')
                 ? `${post.generatedImageUrl}?${Date.now()}`
                 : post.generatedImageUrl ||
-                (post.imageUrl && !post.imageUrl.startsWith('data:image')
-                  ? `${post.imageUrl}?${Date.now()}`
-                  : post.imageUrl || defaultImage)
+                  (post.imageUrl && !post.imageUrl.startsWith('data:image')
+                    ? `${post.imageUrl}?${Date.now()}`
+                    : post.imageUrl || defaultImage)
             }
             alt="Post"
             style={{
@@ -165,7 +168,6 @@ const PostPreview = () => {
               filter: getFilterStyle(),
             }}
           />
-
         </div>
 
         {getPreviewActions()}
@@ -183,7 +185,7 @@ const PostPreview = () => {
 
       <div className="form-group">
         <label htmlFor="caption-edit">Edit Caption</label>
-        <textarea 
+        <textarea
           id="caption-edit"
           rows="4"
           value={post.caption}
@@ -270,8 +272,6 @@ const PostPreview = () => {
         <i className="fas fa-paper-plane mr-sm"></i>
         Post Now
       </button>
-
-
     </div>
   );
 };

@@ -1,15 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-import { useAuth } from '../context/AuthContext'; // Import AuthContext to access the logout function
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
-  const { logout } = useAuth(); // Access the logout function from AuthContext
-  const navigate = useNavigate(); // Initialize useNavigate
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await logout(); // Log the user out
-      navigate('/login'); // Redirect to login page
+      await logout();
+      navigate('/login'); // Redirect user to login after logout
     } catch (err) {
       console.error("Error logging out:", err);
     }
@@ -17,19 +17,32 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="container flex justify-between items-center">
-        <h2 className="m-0">
-          <i className="fas fa-magic mr-sm"></i>
-          Social AI
-        </h2>
-        <nav>
-          <button className="button button-outline button-sm" onClick={handleLogout}>
-            <i className="fa-solid fa-arrow-right-to-bracket"></i>
-            Logout
-          </button>
-        </nav>
-      </div>
-    </header>
+        <div className="header-content">
+          <div className="logo-section">
+          <a href="/" className=""> 
+            {/* <Sparkles className="icon" /> */}
+            <h1 className="logo-title">PostCraft AI</h1>
+            </a>
+          </div>
+
+          <div className="auth-buttons">
+            {user ? (
+              <div className="user-info">
+                {/* <span className="user-name">Hi, {user.displayName || user.email}</span> */}
+                <button onClick={handleLogout} className="btn-outline">
+                  
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <div className="login-buttons">
+                {/* <Link to="/login" className="btn-ghost">Log in</Link>
+                <Link to="/signup" className="btn-primary">Sign up</Link> */}
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
   );
 };
 

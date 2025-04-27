@@ -45,7 +45,7 @@ const ImageUploader = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/transform-image`, {
+      const response = await fetch(`${BASE_URL}/image-caption`, {
         method: 'POST',
         body: formData,
       });
@@ -58,6 +58,7 @@ const ImageUploader = () => {
 
       updatePost({
         imageUrl: data.originalImageUrl || '',
+        caption: data.captions ,
         generatedImageUrl: data.transformedImageUrl || data.imageUrl || '',
       });
     } catch (error) {

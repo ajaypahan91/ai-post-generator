@@ -42,7 +42,7 @@ const ContentSettings = () => {
       // Now, generate the image based on the caption and platform
       const imageResponse = await axios.post('http://localhost:5000/generate-image', {
         prompt: captionText, // Use the caption as the prompt
-        platform_format: post.platform,
+        platform_format: `${post.platformOption}`,
         style: post.imageStyle,
       });
 
@@ -72,7 +72,6 @@ const ContentSettings = () => {
         <input
           type="text"
           id="brand-name"
-          
           placeholder="Enter your user name"
           value={post.brandName}
           onChange={(e) => updatePost({ brandName: e.target.value })}

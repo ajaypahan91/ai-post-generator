@@ -15,8 +15,8 @@ import ResetPassword from "./pages/ResetPassword";
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/" component={HomePage} />
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<HomePage/>} />
+      <Route path="/Aipost" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="*" element={<NotFound />} />

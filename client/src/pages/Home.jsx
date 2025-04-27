@@ -14,8 +14,12 @@ const Home = () => {
     <>
     <div className="app-container fade-in">
       <Header />
-      
       <main className="main">
+      <div className="back-home">
+      <a href="/" className=""> 
+        <i className="fa-solid fa-house-chimney fa-xl"></i>
+      </a>
+        </div> 
         <div className="container">
           <div className="grid">
             {/* Input Panel */}

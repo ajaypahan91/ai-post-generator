@@ -37,12 +37,34 @@
 }
 
 /* Reset Styles */
+.back-home a {
+  display: flex;
+  justify-content:flex-end;
+  gap: 0.55rem;
+  align-items: center;
+  size: 30px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 2rem 2rem ;
+  font-style: var(--dark-text);
+  color: #5d6360;
+
+}
+.back-home a :hover{
+  color: #363a42;
+  transition: 0.3s;
+}
+
+
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
+  
 }
 
 body {
@@ -128,11 +150,11 @@ nav {
 /* Header & Footer */
 
 .header {
-  background-color: rgb(122, 122, 104);
+  background-color: rgb(29, 29, 15);
   background-blend-mode: overlay;
   padding: var(--spacing-md) ;
   box-shadow: var(--shadow-sm);
-  background: linear-gradient(to right, #000000fd, #03130b);
+  /* background: linear-gradient(to right, #000000fd, #03130b); */
   border-top: 3px ridge rgb(143, 104, 33);
   margin-bottom: var(--spacing-xl);
 }
