@@ -5,7 +5,6 @@ const defaultImage = "https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-943260
 
 const PostPreview = () => {
   const { post, updatePost, rephraseCaption } = usePost();
-  console.log(post.caption);  // Add this line for debugging
   console.log('Updated Post:', post);
   
   const getPreviewHeader = () => {

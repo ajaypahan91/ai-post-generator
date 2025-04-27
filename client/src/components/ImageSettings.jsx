@@ -11,22 +11,26 @@ const ImageSettings = () => {
   const [generatedCaption, setGeneratedCaption] = useState('');
 
   // Function to handle caption generation
-  const handleGenerateCaption = async (imagePrompt) => {
+  const handleGenerateCaption = async () => {
+   
     try {
-      const response = await axios.post('http://localhost:5000/generate-caption', {
-        captionPrompt: imagePrompt,
-      });
+      
+      const response = await axios.post('http://localhost:5000/generate-caption', post);
       const captionText = response.data.caption;
 
       // Update the generated caption in the state and post context
       setGeneratedCaption(captionText);
       updatePost({ caption: captionText }); // Sync to shared context
+      
+     
+
     } catch (error) {
       console.error('Error generating caption:', error);
       setGeneratedCaption('Failed to generate caption. Please try again.');
       updatePost({ caption: 'Failed to generate caption. Please try again.' });
     }
   };
+  
 
   // Function to handle similar image generation (using image_transformer.py backend)
   const handleGenerateSimilarImage = async (imagePrompt) => {
@@ -92,7 +96,7 @@ const ImageSettings = () => {
               onClick={() => {
                 if (post.imageUrl) {
                   // Generate Similar Image with style modification
-                  handleGenerateSimilarImage(`Similar to the current image but with different composition. ${imagePrompt}`);
+                  // handleGenerateSimilarImage(`Similar to the current image but with different composition. ${imagePrompt}`);
                   // Generate Caption for Similar Image
                   handleGenerateCaption(`Similar to the current image but with different composition. ${imagePrompt}`);
                 }
@@ -100,7 +104,7 @@ const ImageSettings = () => {
               disabled={!post.imageUrl}
             >
               <i className="fas fa-clone mr-sm"></i>
-              Generate Similar Image
+              Generate Caption
             </button>
           </div>
         </div>

@@ -37,7 +37,7 @@
 }
 
 /* Reset Styles */
-.back-home a {
+.back-home {
   display: flex;
   justify-content:flex-end;
   gap: 0.55rem;
@@ -47,15 +47,13 @@
   margin: auto;
   padding: 0 2rem 2rem ;
   font-style: var(--dark-text);
-  color: #5d6360;
+  color: #353d39;
 
 }
 .back-home a :hover{
   color: #363a42;
   transition: 0.3s;
 }
-
-
 
 
 * {
@@ -78,7 +76,7 @@ body {
 }
 
 a {
-  color: var(--primary);
+  color:#3e3f4b;
   text-decoration: none;
 }
 
