@@ -62,7 +62,6 @@ def generate_image(prompt, platform_format="instagram-post", style="realistic"):
 
         if response.status_code == 200 and content_type.startswith("image"):
             original_img = Image.open(BytesIO(response.content)).convert("RGB")
-
             resized_img = ImageOps.contain(original_img, size)
             background = original_img.resize(size).filter(ImageFilter.GaussianBlur(radius=12))
 

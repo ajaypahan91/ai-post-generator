@@ -6,7 +6,6 @@ from caption_generator import generate_caption
 from image_generator import generate_image
 from image_caption import generate_caption_from_image
 from PIL import Image
-
 from flask_cors import CORS
 from uuid import uuid4
 from dotenv import load_dotenv

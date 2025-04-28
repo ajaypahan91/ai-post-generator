@@ -68,7 +68,7 @@ def generate_caption(brand, tone, keywords, platform, existing_caption=None):
         captions = [cap.strip() for cap in raw_output.split('\n') if cap.strip()]
         final_output = "\n\n".join(captions)
 
-        print("✅ Captions generated successfully:\n")
+        print("✅ Captions generated successfully: ")
         print(final_output)
         return final_output
     except Exception as e:
