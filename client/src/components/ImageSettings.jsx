@@ -38,6 +38,12 @@ const ImageSettings = () => {
     setGeneratingMessage('Generating post...');
 
     try {
+      updatePost({
+             
+        keywords: '',
+       
+      });
+      
       // First, generate image
       await generateImage(imagePrompt);
 
@@ -76,7 +82,7 @@ const ImageSettings = () => {
   return (
     <div className={`tab-content ${activeTab === 'image' ? 'active' : ''}`} id="image-tab">
       <div className="form-group">
-        <label>Upload or Generate Image</label>
+        <label>Upload image to generate caption</label>
 
         {/* Upload Section */}
         <ImageUploader />
