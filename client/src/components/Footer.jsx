@@ -1,12 +1,20 @@
 import React from 'react';
+import { Sparkles } 
+from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="footer">
-      <div className="container">
-        <p className="text-center">© 2025 CapKraft</p>
+    <div className="footer-content">
+      <div className="footer-logo">
+        <Sparkles className="footer-icon" />
+        <span className="footer-title">CapKraft</span>
       </div>
-    </footer>
+      <div className="footer-text">
+        &copy; {new Date().getFullYear()} CapKraft. 
+      </div>
+    </div>
+  </footer>
   );
 };
 
