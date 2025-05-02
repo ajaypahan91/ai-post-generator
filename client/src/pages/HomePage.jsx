@@ -20,9 +20,9 @@ export default function Home() {
         <div className="header-content">
           <a href="/" className="">
             <div className="logo-section">
-              <a href="/" className="">
+              
                 <img src="../assets/logo1.png" alt="CapKraft Logo" className="logo-image" />
-                {/* <h1 className="logo-title">CapKraft</h1> */}</a>
+                {/* <h1 className="logo-title">CapKraft</h1> */}
             </div>
 
           </a>
