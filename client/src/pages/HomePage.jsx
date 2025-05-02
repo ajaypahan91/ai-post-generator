@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; 
 import { 
-  Image, MessageSquare, Share2, Sparkles, Instagram, Twitter, Facebook, Copy, ArrowRight
-} 
+  Image, MessageSquare, Share2, Sparkles, Instagram, Twitter, Facebook} 
 from "lucide-react";
 import "../styles/homepage.css";
 

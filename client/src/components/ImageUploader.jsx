@@ -7,32 +7,8 @@ const ImageUploader = () => {
   const [dragActive, setDragActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDrag = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
-  }, []);
-
-  const handleDrop = useCallback(async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      await handleFileUpload(e.dataTransfer.files[0]);
-    }
-  }, [post.imageStyle]);
-
-  const handleFileChange = useCallback(async (e) => {
-    if (e.target.files && e.target.files[0]) {
-      await handleFileUpload(e.target.files[0]);
-    }
-  }, [post.imageStyle]);
-
-  const handleFileUpload = async (file) => {
+  // Move this function to the top so it can be used in useCallback hooks
+  const handleFileUpload = useCallback(async (file) => {
     if (!file.type.match('image.*')) {
       alert('Please upload an image file');
       return;
@@ -58,7 +34,7 @@ const ImageUploader = () => {
 
       updatePost({
         imageUrl: data.originalImageUrl || '',
-        caption: data.captions ,
+        caption: data.captions,
         generatedImageUrl: data.transformedImageUrl || data.imageUrl || '',
       });
     } catch (error) {
@@ -67,7 +43,32 @@ const ImageUploader = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [post.imageStyle, updatePost]);
+
+  const handleDrag = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback(async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      await handleFileUpload(e.dataTransfer.files[0]);
+    }
+  }, [handleFileUpload]);
+
+  const handleFileChange = useCallback(async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      await handleFileUpload(e.target.files[0]);
+    }
+  }, [handleFileUpload]);
 
   return (
     <div

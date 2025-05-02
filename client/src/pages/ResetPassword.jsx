@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
-
+  
   const handleReset = async (e) => {
     e.preventDefault();
     try {
