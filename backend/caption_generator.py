@@ -49,6 +49,8 @@ def generate_caption(brand=None, tone=None, keywords=None, platform=None, existi
         response = model.generate_content(prompt.strip())
         result = response.text.strip()
 
+        result = result.replace("<br/>", "\n").replace("<br>", "\n")  # Replace HTML with newlines
+
         print("✅ Captions generated successfully:")
         print(result)
         return result

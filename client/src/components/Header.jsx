@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
@@ -17,32 +17,34 @@ const Header = () => {
 
   return (
     <header className="header">
-        <div className="header-content">
-          <div className="logo-section">
-          <a href="/" className=""> 
+      <div className="header-content">
+        <div className="logo-section">
+          <a href="/" className="">
             {/* <Sparkles className="icon" /> */}
-            <h1 className="logo-title">CapKraft </h1>
-            </a>
-          </div>
-
-          <div className="auth-buttons">
-            {user ? (
-              <div className="user-info">
-                <span className="user-name">Hi, {user.displayName || user.email}</span>
-                <button onClick={handleLogout} className="btn-outline">
-                  
-                  Log out
-                </button>
-              </div>
-            ) : (
-              <div className="login-buttons">
-                {/* <Link to="/login" className="btn-ghost">Log in</Link>
-                <Link to="/signup" className="btn-primary">Sign up</Link> */}
-              </div>
-            )}
-          </div>
+            <div className="logo-section">
+              <img src="../assets/logo1.png" alt="CapKraft Logo" className="logo-image" />
+            </div>
+          </a>
         </div>
-      </header>
+
+        <div className="auth-buttons">
+          {user ? (
+            <div className="user-info">
+              <span className="user-name">Hi, {user.displayName || user.email}</span>
+              <button onClick={handleLogout} className="btn-outline">
+
+                Log out
+              </button>
+            </div>
+          ) : (
+            <div className="login-buttons">
+              {/* <Link to="/login" className="btn-ghost">Log in</Link>
+                <Link to="/signup" className="btn-primary">Sign up</Link> */}
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 

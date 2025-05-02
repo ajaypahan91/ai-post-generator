@@ -38,6 +38,10 @@
     margin-bottom: 0;
     margin-left: 0.5rem;
   }
+  .logo-image {
+    height: 40px;
+    object-fit: contain;
+  }
   
   .icon {
     color: #dee7ec;
@@ -156,6 +160,77 @@
     color: #6b7280;
     margin-bottom: 5rem;
   }
+
+/* Showcase Section Styles */
+.showcase-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.section-title {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  color: #777;
+  margin-bottom: 40px;
+}
+
+/* Showcase Container (for scrolling) */
+.showcase-container {
+  display: flex;
+  justify-content: center;
+  overflow: hidden; /* Hide overflow to display 3 images at a time */
+  width: 100%; /* Full width to ensure smooth scroll */
+}
+
+/* Horizontal Scrolling and Snap */
+.showcase-scroll {
+  display: flex;
+  gap: 20px; /* Spacing between cards */
+  scroll-snap-type: x mandatory; /* Enable horizontal scroll snap */
+  overflow-x: auto;
+  padding: 10px 0;
+  scroll-behavior: smooth; /* Smooth scroll behavior */
+}
+
+.showcase-card {
+  flex: 0 0 auto; /* Prevent cards from shrinking or growing */
+  scroll-snap-align: start; /* Align each card to the start when scrolling */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.showcase-image {
+  width: 300px; /* Fixed width for each image */
+  height: auto;
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect: Zoom In */
+.showcase-card:hover .showcase-image {
+  transform: scale(1.05);
+}
+
+/* Optional: Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .showcase-image {
+    width: 250px; /* Adjust image width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .showcase-image {
+    width: 200px; /* Adjust image width further for small screens */
+  }
+}
+
 
   /* Features Section */
   .features-section {
