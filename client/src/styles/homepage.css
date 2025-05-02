@@ -22,7 +22,7 @@
   align-items: center;
   max-width: 1200px;
   margin: auto;
-  /* padding: 0 1.5rem; */
+  padding: 0 1.5rem;
 }
 
 .logo-section {
@@ -377,7 +377,7 @@
   background: #111827;
   color: #9ca3af;
   padding: 2rem 1.5rem;
-
+  /* padding: 0 1.5rem; */
 }
 
 .footer-content {
@@ -387,7 +387,7 @@
   align-items: center;
   max-width: 1200px;
   margin: auto;
-  padding: 0 1.5rem;
+  padding: 0 2.5rem;
 }
 
 @media (min-width: 768px) {
