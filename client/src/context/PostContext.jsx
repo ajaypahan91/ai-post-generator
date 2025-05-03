@@ -1,6 +1,8 @@
 import React, { createContext, useState, useContext } from 'react';
 import { apiRequest } from '../lib/queryClient';
 
+
+
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
 const PostContext = createContext();
@@ -15,7 +17,7 @@ export const PostProvider = ({ children }) => {
     keywords: '',
     caption: '',
     imageUrl: '',
-    generatedImageUrl: '', 
+    generatedImageUrl: '',
     filter: '',
     imageStyle: '',
     platformOption: '',
@@ -38,7 +40,7 @@ export const PostProvider = ({ children }) => {
       keywords: '',
       caption: '',
       imageUrl: '',
-      generatedImageUrl: '', 
+      generatedImageUrl: '',
       filter: '',
       imageStyle: '',
       platformOption: '',
@@ -105,19 +107,17 @@ export const PostProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      const styledImage = data?.styledImage;
+      const imageBase64 = data?.imageBase64;
 
-      if (!styledImage) {
+      if (!imageBase64) {
         throw new Error('Image generation failed. No image returned.');
       }
 
-      const imagePath = styledImage.startsWith('http')
-        ? styledImage
-        : `${BACKEND_URL}${styledImage}`;
-
       updatePost({
-        imageUrl: imagePath,
-        generatedImageUrl: imagePath,
+        imageUrl: imageBase64,
+        generatedImageUrl: imageBase64,
+        imageStyle: data?.style || post.imageStyle,
+        platformOption: data?.platform_format || post.platform,
       });
 
       clearInterval(timer);
@@ -137,26 +137,26 @@ export const PostProvider = ({ children }) => {
     }
   };
 
- 
+
   const generateCaptionFromImage = async () => {
     if (!post.imageUrl) {
       alert('Please upload an image first');
       return;
     }
-  
+
     setIsGenerating(true);
     setProgress(0);
     setGeneratingMessage('Generating caption from the uploaded image...');
     const timer = simulateProgress(0, 90);
-  
+
     try {
       const response = await apiRequest('POST', `${BACKEND_URL}/image-caption`, {
-        imageUrl: post.imageUrl
+        imageBase64: post.imageUrl,
       });
-  
+
       const data = await response.json();
       console.log("Generated Caption Data:", data);
-  
+
       if (data.captions) {
         updatePost({ caption: data.captions });
         setProgress(100);
@@ -164,7 +164,7 @@ export const PostProvider = ({ children }) => {
       } else {
         alert('No caption was returned from the server');
       }
-  
+
     } catch (error) {
       console.error('Error generating caption from image:', error);
       setGeneratingMessage('Error generating caption. Please try again.');
@@ -175,8 +175,8 @@ export const PostProvider = ({ children }) => {
       }, 500);
     }
   };
-  
-  
+
+
   const savePost = async () => {
     if (!post.brandName || !post.caption) {
       alert('Please enter brand name and caption');
@@ -220,7 +220,7 @@ export const PostProvider = ({ children }) => {
     }
   };
 
- const simulateProgress = (start, end) => {
+  const simulateProgress = (start, end) => {
     setProgress(start);
     return setInterval(() => {
       setProgress(prev => {
@@ -285,11 +285,11 @@ export const PostProvider = ({ children }) => {
       savePost,
       rephraseCaption,
       setIsGenerating,
-      isGenerating, 
+      isGenerating,
       progress,
-      setProgress, 
+      setProgress,
       generatingMessage,
-      setGeneratingMessage, 
+      setGeneratingMessage,
       activeTab,
       setActiveTab
     }}>

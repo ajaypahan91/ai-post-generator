@@ -13,37 +13,42 @@ const ImageUploader = () => {
       alert('Please upload an image file');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('style', post.imageStyle || 'default');
-
+    formData.append('brandName', post.brandName || 'Unknown');
+  
     setIsLoading(true);
-
+  
     try {
       const response = await fetch(`${BASE_URL}/image-caption`, {
         method: 'POST',
         body: formData,
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to process image');
       }
-
+  
       const data = await response.json();
-
-      updatePost({
-        imageUrl: data.originalImageUrl || '',
-        caption: data.captions,
-        generatedImageUrl: data.transformedImageUrl || data.imageUrl || '',
-      });
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updatePost({
+          imageUrl: reader.result,
+          caption: data.captions,
+          generatedImageUrl: data.transformedImageUrl || data.imageUrl || '',
+        });
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error('Error processing image:', error);
       alert('Failed to process image. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  }, [post.imageStyle, updatePost]);
+  }, [post.brandName, updatePost]);
+   
 
   const handleDrag = useCallback((e) => {
     e.preventDefault();

@@ -1,14 +1,15 @@
+import base64
 import os
 import time
+from image_caption import generate_caption_from_image_bytes
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from PIL import Image
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
-
 from caption_generator import generate_caption
 from image_generator import generate_image
-from image_caption import generate_caption_from_image
+
 
 # Load environment variables
 load_dotenv()
@@ -54,23 +55,21 @@ def generate_image_route():
         print("🚀 Received data for image generation:", data)
 
         prompt = data.get('prompt')
-        style = data.get('style', 'realistic')
+        style = data.get('styled', 'realistic')
         platform_format = data.get('platform_format', 'instagram-post')
         print(f"👉 Platform format selected: {platform_format}")
 
-        result = generate_image(prompt, platform_format, style)
+        image_data = generate_image(prompt, platform_format, style)
 
-        if result:
-            # Construct styled image URL
-            styled_filename = os.path.basename(result['styled'])
-            styled_image_url = f"{BASE_URL}/generated/{styled_filename}"
-
+        if image_data:
             return jsonify({
                 'success': True,
-                'imageUrl': styled_image_url,
-                'rawImage': f"{BASE_URL}/{result['raw'].replace(os.sep, '/')}",
-                'styledImage': styled_image_url
+                'imageBase64': f"data:image/png;base64,{image_data['image_base64']}",
+                'size': image_data['size'],
+                'style': image_data['style'],
+                'platform_format': image_data['platform_format']
             }), 200
+
         else:
             return jsonify({'error': 'Image generation failed.'}), 500
 
@@ -87,31 +86,21 @@ def generate_image_caption():
 
         image_file = request.files['image']
         brand = request.form.get('brandName', 'Unknown Brand')
-        style = request.form.get('style', 'realistic')
-        platform_format = request.form.get('platform_format', 'instagram-post')
 
         if image_file.filename == '':
             return jsonify({'error': 'No selected file'}), 400
 
-        # Save uploaded file securely
-        filename = secure_filename(image_file.filename)
-        upload_path = os.path.join('generated', f"input_{int(time.time())}_{filename}")
-        image_file.save(upload_path)
+        image_bytes = image_file.read()
+        mime_type = image_file.mimetype
 
-        # Load the image safely
-        input_image = Image.open(upload_path).convert("RGB")
+        captions = generate_caption_from_image_bytes(image_bytes, mime_type, brand)
 
-        # Generate caption
-        captions = generate_caption_from_image(upload_path, brand)
-
-        return jsonify({
-            'originalImageUrl': f"{BASE_URL}/generated/{os.path.basename(upload_path)}",
-            'captions': captions
-        }), 200
+        return jsonify({'captions': captions}), 200
 
     except Exception as e:
         print(f"❌ Error in image-caption route: {e}")
         return jsonify({'error': 'Image captioning failed'}), 500
+
 
 # ------------------------ Serve Generated Images ------------------------
 @app.route('/generated/<filename>')

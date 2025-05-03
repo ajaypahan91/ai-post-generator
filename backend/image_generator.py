@@ -5,6 +5,8 @@ from pathlib import Path
 from PIL import Image, ImageOps, ImageFilter
 from dotenv import load_dotenv
 import os
+import base64
+
 
 # Load environment variables
 load_dotenv()
@@ -53,7 +55,6 @@ def generate_image(prompt, platform_format="instagram-post", style="realistic"):
         platform_format = "instagram-post"
 
     size = VALID_FORMATS[platform_format]
-    timestamp = int(time.time())
     full_prompt = build_prompt(prompt, style, platform_format)
 
     try:
@@ -66,29 +67,23 @@ def generate_image(prompt, platform_format="instagram-post", style="realistic"):
             background = original_img.resize(size).filter(ImageFilter.GaussianBlur(radius=12))
 
             background.paste(resized_img, (
-                (size[0] - resized_img.width) // 2,
-                (size[1] - resized_img.height) // 2
+            (size[0] - resized_img.width) // 2,
+            (size[1] - resized_img.height) // 2
             ))
 
-            base_name = f"{platform_format.replace('-', '_')}_{timestamp}_{style}"
-            raw_path = OUTPUT_DIR / f"raw_{base_name}.png"
-            styled_path = OUTPUT_DIR / f"styled_{base_name}.png"
+            img_buffer = BytesIO()
+            background.save(img_buffer, format="PNG")
+            img_buffer.seek(0)
 
-            original_img.save(raw_path)
-            background.save(styled_path)
-
-            print(f"✅ Raw image saved: {raw_path}")
-            print(f"✅ Styled image saved: {styled_path}")
+        # Encode to base64
+            image_base64 = base64.b64encode(img_buffer.getvalue()).decode("utf-8")
 
             return {
-                "raw": str(raw_path).replace("\\", "/"),
-                "styled": str(styled_path).replace("\\", "/"),
-                "timestamp": timestamp,
+                "image_base64": image_base64,
                 "size": size,
                 "style": style,
-                "format": platform_format
+                "platform_format": platform_format
             }
-
         else:
             try:
                 error_info = response.json()
@@ -100,6 +95,8 @@ def generate_image(prompt, platform_format="instagram-post", style="realistic"):
     except Exception as e:
         print(f"❌ Exception during image generation: {e}")
         return None
+
+
 
 # Test block
 # if __name__ == "__main__":

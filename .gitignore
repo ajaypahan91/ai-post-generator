@@ -9,3 +9,4 @@ scheduled_posts.txt
 *.db
 node_modules/
 venv/
+client/package.json

@@ -20,7 +20,6 @@ export default function Home() {
         <div className="header-content">
           <a href="/" className="">
             <div className="logo-section">
-              
                 <img src="../assets/logo1.png" alt="CapKraft Logo" className="logo-image" />
                 {/* <h1 className="logo-title">CapKraft</h1> */}
             </div>

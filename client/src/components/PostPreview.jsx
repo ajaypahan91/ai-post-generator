@@ -1,12 +1,14 @@
 import React from 'react';
+import { toast } from "../hooks/use-toast";
 import { usePost } from '../context/PostContext';
+
 
 const defaultImage = "https://cdn.pixabay.com/photo/2025/02/26/09/58/bird-9432600_1280.jpg";
 
 const PostPreview = () => {
   const { post, updatePost, rephraseCaption } = usePost();
   // console.log('Updated Post:', post);
-  
+
   const getPreviewHeader = () => {
     switch (post.platform) {
       case 'instagram':
@@ -49,7 +51,7 @@ const PostPreview = () => {
             <i className="fab fa-twitter" style={{ color: '#1DA1F2' }}></i>
           </div>
         );
-        
+
       case 'facebook-post':
         return (
           <div className="social-preview-header">
@@ -71,7 +73,7 @@ const PostPreview = () => {
             <i className="fas fa-ellipsis-h"></i>
           </div>
         );
-        
+
       default:
         return null;
     }
@@ -89,7 +91,7 @@ const PostPreview = () => {
             <i className="far fa-paper-plane"></i>
           </div>
         );
-        
+
       case 'twitter-post':
         return (
           <div className="social-preview-actions">
@@ -99,7 +101,7 @@ const PostPreview = () => {
             <i className="far fa-share-square"></i>
           </div>
         );
-        
+
       case 'facebook-post':
         return (
           <div className="social-preview-actions">
@@ -108,7 +110,7 @@ const PostPreview = () => {
             <i className="far fa-share-square"></i>
           </div>
         );
-        
+
       default:
         return null;
     }
@@ -130,6 +132,8 @@ const PostPreview = () => {
         return 'none';
     }
   };
+  const imageUrl = post.generatedImageUrl || post.imageUrl;
+  const isPostDisabled = !post.caption || !imageUrl;
 
   return (
     <div className="card">
@@ -152,13 +156,17 @@ const PostPreview = () => {
           <img
             key={post.generatedImageUrl || post.imageUrl}
             src={
-              post.generatedImageUrl && !post.generatedImageUrl.startsWith('data:image')
-                ? `${post.generatedImageUrl}?${Date.now()}`
-                : post.generatedImageUrl ||
-                  (post.imageUrl && !post.imageUrl.startsWith('data:image')
-                    ? `${post.imageUrl}?${Date.now()}`
-                    : post.imageUrl || defaultImage)
+              post.generatedImageUrl?.startsWith('data:image')
+                ? post.generatedImageUrl
+                : post.generatedImageUrl
+                  ? `${post.generatedImageUrl}?${Date.now()}`
+                  : post.imageUrl?.startsWith('data:image')
+                    ? post.imageUrl
+                    : post.imageUrl
+                      ? `${post.imageUrl}?${Date.now()}`
+                      : defaultImage
             }
+
             alt="Post"
             style={{
               width: '100%',
@@ -217,14 +225,16 @@ const PostPreview = () => {
 
       <button
         className="button button-primary button-lg"
+        disabled={isPostDisabled}
+        style={{ opacity: isPostDisabled ? 0.6 : 1, cursor: isPostDisabled ? 'not-allowed' : 'pointer' }}
         onClick={async () => {
           try {
-            // 1. Copy caption to clipboard
             await navigator.clipboard.writeText(post.caption || '');
-            alert("📋 Caption copied to clipboard!");
+            toast({
+              title: "Copied",
+              description: "📋 Caption copied to clipboard!",
+            });
 
-            // 2. Auto-download the generated image
-            const imageUrl = post.generatedImageUrl || post.imageUrl;
             if (imageUrl) {
               const response = await fetch(imageUrl);
               const blob = await response.blob();
@@ -238,11 +248,14 @@ const PostPreview = () => {
               document.body.removeChild(link);
               window.URL.revokeObjectURL(blobUrl);
             } else {
-              alert("⚠️ No image to download.");
+              toast({
+                title: "No Image",
+                description: "⚠️ No image to download.",
+                variant: "destructive",
+              });
               return;
             }
 
-            // 3. Redirect to social platform
             let platformUrl = '';
             switch (post.platform) {
               case 'instagram':
@@ -257,21 +270,31 @@ const PostPreview = () => {
                 platformUrl = 'https://www.facebook.com/';
                 break;
               default:
-                alert('⚠️ Unknown platform selected.');
+                toast({
+                  title: "Unknown Platform",
+                  description: "⚠️ Unknown platform selected.",
+                  variant: "destructive",
+                });
                 return;
             }
 
             window.open(platformUrl, '_blank');
           } catch (err) {
             console.error('❌ Error in Post Now:', err);
-            alert('❌ Something went wrong. Try again.');
+            toast({
+              title: "Error",
+              description: "❌ Something went wrong. Try again.",
+              variant: "destructive",
+            });
           }
         }}
       >
         <i className="fas fa-paper-plane mr-sm"></i>
         Post Now
       </button>
+
     </div>
+
   );
 };
 

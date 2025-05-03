@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// Constants
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
@@ -18,14 +19,15 @@ const actionTypes = {
 
 const toastTimeouts = new Map();
 const listeners = [];
-
 let memoryState = { toasts: [] };
 
+// Dispatch function to update state based on actions
 function dispatch(action) {
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => listener(memoryState));
 }
 
+// Add a toast to remove queue after delay
 function addToRemoveQueue(toastId) {
   if (toastTimeouts.has(toastId)) return;
 
@@ -37,6 +39,7 @@ function addToRemoveQueue(toastId) {
   toastTimeouts.set(toastId, timeout);
 }
 
+// Reducer to handle state changes
 function reducer(state, action) {
   switch (action.type) {
     case actionTypes.ADD_TOAST:
@@ -78,6 +81,7 @@ function reducer(state, action) {
   }
 }
 
+// Toast function to add toast messages
 function toast(props) {
   const id = genId();
 
@@ -105,6 +109,7 @@ function toast(props) {
   return { id, dismiss, update };
 }
 
+// Custom Hook for Toasts
 function useToast() {
   const [state, setState] = useState(memoryState);
 
@@ -124,4 +129,5 @@ function useToast() {
   };
 }
 
+// Exporting the useToast hook and toast function
 export { useToast, toast };

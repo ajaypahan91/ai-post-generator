@@ -50,7 +50,7 @@ const ContentSettings = () => {
         style: post.imageStyle,
       });
 
-      const imageUrl = imageResponse.data.imageUrl;
+      const imageUrl = imageResponse.data.imageBase64;
       updatePost({ generatedImageUrl: imageUrl });
 
       setProgress(100);
