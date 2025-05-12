@@ -19,7 +19,7 @@ const ContentSettings = () => {
     'professional', 'casual', 'funny', 'serious', 'promotional', 'informative'
   ];
 
-  const handleGenerateCaption = async () => {
+  const handleGeneratePost = async () => {
     if (!post.brandName || !post.platform || !post.tone || !post.keywords) {
       alert("Please fill out all required fields before generating a post.");
       return;
@@ -28,24 +28,13 @@ const ContentSettings = () => {
     try {
       setIsGenerating(true);
       setProgress(10);
-      setGeneratingMessage("Generating caption...");
-
-      const response = await axios.post(`${BACKEND_URL}/generate-caption`, {
-        brand: post.brandName,
-        tone: post.tone,
-        keywords: post.keywords,
-        platform: post.platform,
-      });
-
-      const generated = response.data.caption; // <-- Correctly receive from backend
-      setGeneratedCaption(generated);
-      updatePost({ caption: generated });
-
-      setProgress(50);
       setGeneratingMessage("Generating image...");
 
+      // Generate image first using keywords or brand as prompt
+      const imagePrompt = `${post.brandName} ${post.keywords}`.trim();
+
       const imageResponse = await axios.post(`${BACKEND_URL}/generate-image`, {
-        prompt: generated,
+        prompt: imagePrompt,
         platform_format: post.platformOption || post.platform,
         style: post.imageStyle,
       });
@@ -53,12 +42,27 @@ const ContentSettings = () => {
       const imageUrl = imageResponse.data.imageBase64;
       updatePost({ generatedImageUrl: imageUrl });
 
+      setProgress(60);
+      setGeneratingMessage("Generating caption...");
+
+      const captionResponse = await axios.post(`${BACKEND_URL}/generate-caption`, {
+        brand: post.brandName,
+        tone: post.tone,
+        keywords: post.keywords,
+        platform: post.platform,
+        imageUrl: imageUrl, // Pass image URL if needed
+      });
+
+      const caption = captionResponse.data.caption;
+      setGeneratedCaption(caption);
+      updatePost({ caption });
+
       setProgress(100);
-      setGeneratingMessage("Done!");
-      setTimeout(() => setIsGenerating(false), 2000);
+      setGeneratingMessage("Post ready!");
+      setTimeout(() => setIsGenerating(false), 1500);
 
     } catch (error) {
-      console.error('Error generating:', error);
+      console.error('Error generating post:', error);
       setIsGenerating(false);
       setGeneratingMessage("Error generating content.");
       setGeneratedCaption('Failed to generate. Please try again.');
@@ -69,7 +73,7 @@ const ContentSettings = () => {
   return (
     <div className={`tab-content ${activeTab === 'content' ? 'active' : ''}`} id="content-tab">
       <GeneratingOverlay />
-      
+
       <div className="form-group">
         <label htmlFor="brand-name">User Name</label>
         <input
@@ -158,7 +162,7 @@ const ContentSettings = () => {
         />
       </div>
 
-      <button className="button button-primary button-lg" onClick={handleGenerateCaption}>
+      <button className="button button-primary button-lg" onClick={handleGeneratePost}>
         <i className="fas fa-wand-magic-sparkles mr-sm"></i>
         Generate Post
       </button>
